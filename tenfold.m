@@ -1,8 +1,7 @@
 error = [];
-for i = 1:1
+for i = 1:10
     word=sprintf('fold %0.0d. \n ',i);
     disp(word);
-    tempW = W;
     temp = test{i};
     testpart = [];
     for j = 1:10000
