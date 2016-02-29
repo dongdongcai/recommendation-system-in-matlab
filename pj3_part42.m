@@ -1,4 +1,4 @@
-function [aberror, XfitThis, testmatrix, finalResidual]=factofor10fold(X,k,test,option)
+function [XfitThis]=pj3_part42(X,k,lambda,test,option)
 % Weighted NMF based on multiple update rules for missing values: X=AY, s.t. A,Y>=0.
 % Definition:
 %     [A,Y,numIter,tElapsed,finalResidual]=wnmfrule(X,k)
@@ -52,7 +52,7 @@ optionDefault.iter=1000;
 optionDefault.dis=true;
 optionDefault.residual=1e-4;
 optionDefault.tof=1e-4;
-if nargin<4
+if nargin<5
    option=optionDefault;
 else
     option=mergeOption(option,optionDefault);
@@ -76,13 +76,20 @@ A=X/Y;
 % A(A<eps)=0;
 A=max(A,eps);
 XfitPrevious=Inf;
+Wt = [W'; ones(k, r)];
+Wnt = [W; ones(k, c)];
+X0t = [X';zeros(k, r)];
+X0 = [X; zeros(k, c)];
 for i=1:option.iter
     switch option.distance
         case 'ls'
-            A=A.*(((W.*X)*Y')./((W.*(A*Y))*Y'));
+            YIt = [Y';sqrt(lambda) * eye(k, k)];
+            A=A'.*((YIt' * (Wt.*X0t))./(YIt' * (Wt.*(YIt * A'))));
+            A = A';
 %             A(A<eps)=0;
                 A=max(A,eps);
-            Y=Y.*((A'*(W.*X))./(A'*(W.*(A*Y))));
+            Ae = [A;sqrt(lambda) * eye(k, k)];
+            Y=Y.*((Ae'*(Wnt.*X0))./(Ae'*(Wnt.*(Ae*Y))));
 %             Y(Y<eps)=0;
                 Y=max(Y,eps);
         case 'kl'
@@ -101,11 +108,10 @@ for i=1:option.iter
         fitRes=matrixNorm(W.*(XfitPrevious-XfitThis));
         XfitPrevious=XfitThis;
         curRes=norm(W.*(X-XfitThis),'fro');
-        if option.tof>=fitRes || option.residual>=curRes || i==option.iter            
+        if option.tof>=fitRes || option.residual>=curRes || i==option.iter
             s=sprintf('Mutiple update rules based NMF successes! \n # of iterations is %0.0d. \n The final residual is %0.4d.',i,curRes);
-            disp(s);            
-            singleerror = testmatrix .* (X - XfitThis);
-            aberror = sum(sum(singleerror)) / 10000;
+            disp(s);
+            numIter=i;
             finalResidual=curRes;
             break;
         end
@@ -113,5 +119,5 @@ for i=1:option.iter
 end
 tElapsed=toc(tStart);
 end
-
-
+%4.9050e+00.
+%7.8867e+01

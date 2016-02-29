@@ -1,4 +1,4 @@
-function [aberror, XfitThis, testmatrix, finalResidual]=factofor10fold(X,k,test,option)
+function [XfitThis,numIter,tElapsed,finalResidual]=pj3_part4(X,k,option)
 % Weighted NMF based on multiple update rules for missing values: X=AY, s.t. A,Y>=0.
 % Definition:
 %     [A,Y,numIter,tElapsed,finalResidual]=wnmfrule(X,k)
@@ -52,7 +52,7 @@ optionDefault.iter=1000;
 optionDefault.dis=true;
 optionDefault.residual=1e-4;
 optionDefault.tof=1e-4;
-if nargin<4
+if nargin<3
    option=optionDefault;
 else
     option=mergeOption(option,optionDefault);
@@ -62,11 +62,10 @@ end
 W=isnan(X);
 X(W)=0;
 W=~W;
-testmatrix = zeros(943, 1682);
-for i = 1 : 10000
-    W(test{i, 1}, test{i, 2}) = 0;
-    testmatrix(test{i, 1}, test{i, 2}) = 1;
-end
+tempmatrix = X;
+X = W;
+W = tempmatrix;
+
 % iter: number of iterations
 [r,c]=size(X); % c is # of samples, r is # of features
 Y=rand(k,c);
@@ -101,11 +100,10 @@ for i=1:option.iter
         fitRes=matrixNorm(W.*(XfitPrevious-XfitThis));
         XfitPrevious=XfitThis;
         curRes=norm(W.*(X-XfitThis),'fro');
-        if option.tof>=fitRes || option.residual>=curRes || i==option.iter            
+        if option.tof>=fitRes || option.residual>=curRes || i==option.iter
             s=sprintf('Mutiple update rules based NMF successes! \n # of iterations is %0.0d. \n The final residual is %0.4d.',i,curRes);
-            disp(s);            
-            singleerror = testmatrix .* (X - XfitThis);
-            aberror = sum(sum(singleerror)) / 10000;
+            disp(s);
+            numIter=i;
             finalResidual=curRes;
             break;
         end
@@ -113,5 +111,5 @@ for i=1:option.iter
 end
 tElapsed=toc(tStart);
 end
-
-
+%4.9050e+00.
+%7.8867e+01
