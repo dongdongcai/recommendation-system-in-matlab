@@ -48,7 +48,7 @@ function [aberror, XfitThis, testmatrix, finalResidual]=factofor10fold(X,k,test,
 
 tStart=tic;
 optionDefault.distance='ls';
-optionDefault.iter=1000;
+optionDefault.iter=200;
 optionDefault.dis=true;
 optionDefault.residual=1e-4;
 optionDefault.tof=1e-4;
@@ -103,8 +103,10 @@ for i=1:option.iter
         curRes=norm(W.*(X-XfitThis),'fro');
         if option.tof>=fitRes || option.residual>=curRes || i==option.iter            
             s=sprintf('Mutiple update rules based NMF successes! \n # of iterations is %0.0d. \n The final residual is %0.4d.',i,curRes);
-            disp(s);            
-            singleerror = testmatrix .* (X - XfitThis);
+            disp(s);
+            XfitThis = max(XfitThis, eps);
+            singleerror = testmatrix .* abs(X - XfitThis);
+            %wrong = max(max(singleerror));
             aberror = sum(sum(singleerror)) / 10000;
             finalResidual=curRes;
             break;

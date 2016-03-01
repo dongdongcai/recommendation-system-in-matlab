@@ -19,13 +19,19 @@ for i = 1:10
         for j = 1:10000
             user = testpart{j, 1};
             movie = testpart{j, 2};
-            if predict(user, movie) > thre(k)
+            %if predict(user, movie) > thre(k)
+            %    precisionpre = precisionpre + 1;
+            %    if R(user, movie) > thre(k)
+            %        precisionact = precisionact + 1;
+            %    end
+            %end
+            if R(user, movie) > thre(k)
                 precisionpre = precisionpre + 1;
-                if R(user, movie) > thre(k)
+                if predict(user, movie) > thre(k)
                     precisionact = precisionact + 1;
                 end
-            end
-            if R(user, movie) > thre(k)
+            end            
+            if R(user, movie) <= thre(k) && R(user, movie) > 0
                 recallact = recallact + 1;
                 if predict(user, movie) > thre(k)
                     recallpre = recallpre + 1;
@@ -36,6 +42,7 @@ for i = 1:10
         recall(pointer) = recallpre / recallact;
         pointer = pointer + 1;
     end
+    hold on
     plot(recall, precision, '+');
     xlabel('recall');
     ylabel('precision');

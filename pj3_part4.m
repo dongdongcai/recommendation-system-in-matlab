@@ -105,6 +105,7 @@ for i=1:option.iter
             disp(s);
             numIter=i;
             finalResidual=curRes;
+            XfitThis = max(XfitThis, eps);
             break;
         end
     end

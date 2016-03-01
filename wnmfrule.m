@@ -48,7 +48,7 @@ function [A,Y,numIter,tElapsed,finalResidual]=wnmfrule(X,k,option)
 
 tStart=tic;
 optionDefault.distance='ls';
-optionDefault.iter=1000;
+optionDefault.iter=200;
 optionDefault.dis=true;
 optionDefault.residual=1e-4;
 optionDefault.tof=1e-4;
@@ -97,6 +97,7 @@ for i=1:option.iter
         fitRes=matrixNorm(W.*(XfitPrevious-XfitThis));
         XfitPrevious=XfitThis;
         curRes=norm(W.*(X-XfitThis),'fro');
+        compare = matrixNorm(W.*(X-XfitThis));
         if option.tof>=fitRes || option.residual>=curRes || i==option.iter
             s=sprintf('Mutiple update rules based NMF successes! \n # of iterations is %0.0d. \n The final residual is %0.4d.',i,curRes);
             disp(s);
