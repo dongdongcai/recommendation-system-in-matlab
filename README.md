@@ -1,6 +1,6 @@
 #INTRODUCTION
 
-In order to implement a recommendation system from the matrix R whose row represent the user-id and column represent the movie-id. We need to obtain the matrix for user-preference(U) and feature-movie(V) which have much lower dimension than R. We can factorize R = UV using alternating least square algorithm. That is, randomly pick U first and calculating the V such that minimize ||R - UV||F2 , then with calculated V, update U to minimize  ||R - UV||F2 . Keep doing this until U and V converges. The algorithm can be easily implemented using multiple programming languages. Here we use Matlab to do this since Matlab is easier to use in terms of matrix calculation. In this project, we would analyze 100k data from MovieLens which contains 943 users and 1682 movies.
+In order to implement a recommendation system from the matrix R whose row represent the user-id and column represent the movie-id. We need to obtain the matrix for user-preference(U) and feature-movie(V) which have much lower dimension than R. We can factorize R = UV using alternating least square algorithm. That is, randomly pick U first and calculating the V such that minimize squared error, then with calculated V, update U to minimize squared error . Keep doing this until U and V converges. The algorithm can be easily implemented using multiple programming languages. Here we use Matlab to do this since Matlab is easier to use in terms of matrix calculation. In this project, we would analyze 100k data from MovieLens which contains 943 users and 1682 movies.
 
 #USAGE
 
