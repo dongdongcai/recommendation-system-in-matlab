@@ -1,5 +1,9 @@
-function n=matrixNorm(A)
-% Calculate the Frobenius norm of matrix A
+function optionFinal=mergeOption(option,optionDefault)
+% Merge two struct options into one struct
+% Usage:
+% optionFinal=mergeOption(option,optionDefault)
+% option: struct
+% optionDefault: struct
 %%%%
 % Copyright (C) <2012>  <Yifeng Li>
 % 
@@ -20,8 +24,15 @@ function n=matrixNorm(A)
 % Yifeng Li
 % University of Windsor
 % li11112c@uwindsor.ca; yifeng.li.cn@gmail.com
-% May 06, 2011
+% Mar. 18, 2011
 %%%%
 
-n=sum(sum(A.^2));
+optionFinal=optionDefault;
+if isempty(option)
+    return;
+end
+names=fieldnames(option);
+for i=1:numel(names)
+    optionFinal=setfield(optionFinal,names{i},getfield(option,names{i}));
+end
 end

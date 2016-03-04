@@ -96,8 +96,8 @@ for i=1:option.iter
         XfitThis=A*Y;
         fitRes=matrixNorm(W.*(XfitPrevious-XfitThis));
         XfitPrevious=XfitThis;
-        curRes=norm(W.*(X-XfitThis),'fro');
-        compare = matrixNorm(W.*(X-XfitThis));
+        %curRes=norm(W.*(X-XfitThis),'fro');
+        curRes = matrixNorm(W.*(X-XfitThis));
         if option.tof>=fitRes || option.residual>=curRes || i==option.iter
             s=sprintf('Mutiple update rules based NMF successes! \n # of iterations is %0.0d. \n The final residual is %0.4d.',i,curRes);
             disp(s);

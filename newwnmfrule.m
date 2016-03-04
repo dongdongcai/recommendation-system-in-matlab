@@ -1,4 +1,4 @@
-function [XfitThis,numIter,tElapsed,finalResidual]=pj3_part4(X,k,option)
+function [A,Y,numIter,tElapsed,finalResidual]=wnmfrule(X,k,option)
 % Weighted NMF based on multiple update rules for missing values: X=AY, s.t. A,Y>=0.
 % Definition:
 %     [A,Y,numIter,tElapsed,finalResidual]=wnmfrule(X,k)
@@ -48,7 +48,7 @@ function [XfitThis,numIter,tElapsed,finalResidual]=pj3_part4(X,k,option)
 
 tStart=tic;
 optionDefault.distance='ls';
-optionDefault.iter=1000;
+optionDefault.iter=200;
 optionDefault.dis=true;
 optionDefault.residual=1e-4;
 optionDefault.tof=1e-4;
@@ -62,13 +62,16 @@ end
 W=isnan(X);
 X(W)=0;
 W=~W;
-tempmatrix = X;
-X = W;
-W = tempmatrix;
 
 % iter: number of iterations
 [r,c]=size(X); % c is # of samples, r is # of features
 Y=rand(k,c);
+for i = 1:c
+    tempcol = X(:, i);
+    number = sum(tempcol > 0);
+    aver = sum(tempcol) / number;
+    Y(1, i) = aver;
+end
 % Y(Y<eps)=0;
 Y=max(Y,eps);
 A=X/Y;
@@ -100,18 +103,15 @@ for i=1:option.iter
         fitRes=matrixNorm(W.*(XfitPrevious-XfitThis));
         XfitPrevious=XfitThis;
         %curRes=norm(W.*(X-XfitThis),'fro');
-        curRes = matrixNorm(W.*(X-XfitThis));  
+        curRes = matrixNorm(W.*(X-XfitThis));
         if option.tof>=fitRes || option.residual>=curRes || i==option.iter
             s=sprintf('Mutiple update rules based NMF successes! \n # of iterations is %0.0d. \n The final residual is %0.4d.',i,curRes);
             disp(s);
             numIter=i;
             finalResidual=curRes;
-            XfitThis = max(XfitThis, eps);
             break;
         end
     end
 end
 tElapsed=toc(tStart);
 end
-%4.9050e+00.
-%7.8867e+01

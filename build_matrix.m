@@ -5,6 +5,7 @@ for i=1:100000
     rating = u(i, 3);
     R(user, movie) = rating;
 end
+testR = R;
 for i=1:943
     for j = 1:1682
         if R(i, j) == 0

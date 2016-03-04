@@ -1,4 +1,4 @@
-function [XfitThis,numIter,tElapsed,finalResidual]=pj3_part4(X,k,option)
+function [A,Y,numIter,tElapsed,finalResidual]=mywnmfrule(X, k, W, option)
 % Weighted NMF based on multiple update rules for missing values: X=AY, s.t. A,Y>=0.
 % Definition:
 %     [A,Y,numIter,tElapsed,finalResidual]=wnmfrule(X,k)
@@ -48,23 +48,26 @@ function [XfitThis,numIter,tElapsed,finalResidual]=pj3_part4(X,k,option)
 
 tStart=tic;
 optionDefault.distance='ls';
-optionDefault.iter=1000;
+%Modified to 100 so it runs faster
+optionDefault.iter=200;
 optionDefault.dis=true;
-optionDefault.residual=1e-4;
+% Change this (as per what Misagh said)
+% optionDefault.residual=1e-4;
+optionDefault.residual=1;
 optionDefault.tof=1e-4;
-if nargin<3
+if nargin<4
    option=optionDefault;
 else
     option=mergeOption(option,optionDefault);
 end
 
+% % Weight
+% W=isnan(X);
+% X(W)=0;
+% W=~W;
+
 % Weight
-W=isnan(X);
-X(W)=0;
-W=~W;
-tempmatrix = X;
-X = W;
-W = tempmatrix;
+%W=~(X==0);
 
 % iter: number of iterations
 [r,c]=size(X); % c is # of samples, r is # of features
@@ -92,26 +95,22 @@ for i=1:option.iter
         otherwise
             error('Please select the correct distance: option.distance=''ls''; or option.distance=''kl'';');
     end
-    if mod(i,10)==0 || i==option.iter
+    if mod(i,100)==0 || i==option.iter
         if option.dis
-            disp(['Iterating >>>>>> ', num2str(i),'th']);
+            %disp(['Iterating >>>>>> ', num2str(i),'th']);
         end
         XfitThis=A*Y;
         fitRes=matrixNorm(W.*(XfitPrevious-XfitThis));
         XfitPrevious=XfitThis;
-        %curRes=norm(W.*(X-XfitThis),'fro');
-        curRes = matrixNorm(W.*(X-XfitThis));  
+        curRes=norm(W.*(X-XfitThis),'fro');
         if option.tof>=fitRes || option.residual>=curRes || i==option.iter
             s=sprintf('Mutiple update rules based NMF successes! \n # of iterations is %0.0d. \n The final residual is %0.4d.',i,curRes);
             disp(s);
             numIter=i;
             finalResidual=curRes;
-            XfitThis = max(XfitThis, eps);
             break;
         end
     end
 end
 tElapsed=toc(tStart);
 end
-%4.9050e+00.
-%7.8867e+01

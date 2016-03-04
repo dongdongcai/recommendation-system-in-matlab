@@ -1,4 +1,4 @@
-function [XfitThis]=pj3_part42(X,k,lambda,test,option)
+function [XfitThis]=pj3_part42(X,k,lambda,option)
 % Weighted NMF based on multiple update rules for missing values: X=AY, s.t. A,Y>=0.
 % Definition:
 %     [A,Y,numIter,tElapsed,finalResidual]=wnmfrule(X,k)
@@ -52,7 +52,7 @@ optionDefault.iter=1000;
 optionDefault.dis=true;
 optionDefault.residual=1e-4;
 optionDefault.tof=1e-4;
-if nargin<5
+if nargin<4
    option=optionDefault;
 else
     option=mergeOption(option,optionDefault);
@@ -62,11 +62,14 @@ end
 W=isnan(X);
 X(W)=0;
 W=~W;
-testmatrix = zeros(943, 1682);
-for i = 1 : 10000
-    W(test{i, 1}, test{i, 2}) = 0;
-    testmatrix(test{i, 1}, test{i, 2}) = 1;
-end
+tempmatrix = X;
+X = W;
+W = tempmatrix;
+%testmatrix = zeros(943, 1682);
+%for i = 1 : 10000
+%    W(test{i, 1}, test{i, 2}) = 0;
+%   testmatrix(test{i, 1}, test{i, 2}) = 1;
+%end
 % iter: number of iterations
 [r,c]=size(X); % c is # of samples, r is # of features
 Y=rand(k,c);
@@ -92,6 +95,12 @@ for i=1:option.iter
             Y=Y.*((Ae'*(Wnt.*X0))./(Ae'*(Wnt.*(Ae*Y))));
 %             Y(Y<eps)=0;
                 Y=max(Y,eps);
+            %A=A.*(((W.*X)*Y')./((W.*(A*Y))*Y'+lambda*A));
+%             A(A<eps)=0;
+            %   A=max(A,eps);
+            %Y=Y.*((A'*(W.*X))./(A'*(W.*(A*Y))+lambda*Y));
+%             Y(Y<eps)=0;
+            %    Y=max(Y,eps);
         case 'kl'
             A=(A./(W*Y')) .* ( ((W.*X)./(A*Y))*Y');
             A=max(A,eps);
@@ -107,7 +116,8 @@ for i=1:option.iter
         XfitThis=A*Y;
         fitRes=matrixNorm(W.*(XfitPrevious-XfitThis));
         XfitPrevious=XfitThis;
-        curRes=norm(W.*(X-XfitThis),'fro');
+        %curRes=norm(W.*(X-XfitThis),'fro');
+        curRes = matrixNorm(W.*(X-XfitThis)) + lambda * matrixNorm(Y) + lambda * matrixNorm(A);
         if option.tof>=fitRes || option.residual>=curRes || i==option.iter
             s=sprintf('Mutiple update rules based NMF successes! \n # of iterations is %0.0d. \n The final residual is %0.4d.',i,curRes);
             disp(s);
@@ -120,5 +130,3 @@ for i=1:option.iter
 end
 tElapsed=toc(tStart);
 end
-%4.9050e+00.
-%7.8867e+01
