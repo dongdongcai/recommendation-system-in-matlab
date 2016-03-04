@@ -8,7 +8,7 @@ The main program of the project is *main.m* and there are six helper programs: *
 
 #REFERENCES
 
->Li, Yifeng, and Alioune Ngom. "The non-negative matrix factorization toolbox for biological data mining." Source code for biology and medicine 8.1 (2013): 1.
+>[Li, Yifeng, and Alioune Ngom. "The non-negative matrix factorization toolbox for biological data mining." Source code for biology and medicine 8.1 (2013): 1.](http://download.springer.com/static/pdf/925/art%253A10.1186%252F1751-0473-8-10.pdf?originUrl=http%3A%2F%2Flink.springer.com%2Farticle%2F10.1186%2F1751-0473-8-10&token2=exp=1457065702~acl=%2Fstatic%2Fpdf%2F925%2Fart%25253A10.1186%25252F1751-0473-8-10.pdf%3ForiginUrl%3Dhttp%253A%252F%252Flink.springer.com%252Farticle%252F10.1186%252F1751-0473-8-10*~hmac=0cc44e40b6eac4ad8f4bcb3645c7432ec9733460444eda7c65f9b2da6d46cda6)
 
 Refer to this paper for details about wnmfrule.m
 
