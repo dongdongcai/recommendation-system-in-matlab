@@ -4,7 +4,7 @@ In order to implement a recommendation system from the matrix R whose row repres
 
 #USAGE
 
-The main program of the project is *main.m* and there are six helper programs: *build_matrix.m* which build up the user-movie matrix from raw data, *createtest.m* shuffle the raw data and create test and train datasets for cross validation, the *wnmfrule.m* is for matrix factorization and *pj3_part42* is for regularized matrix factorization. *matrixNorm.m* and *mergeOption.m* are helper functions for *wnmfrule.m* and *pj3_part42.m*. To run the program properly, **you should put all six files mentioned above and the raw data in one folder**.
+The main program of the project is *main.m* and there are six helper programs: *build_matrix.m* which build up the user-movie matrix from raw data, *createtest.m* shuffle the raw data and create test and train datasets for cross validation, the *wnmfrule.m* is for matrix factorization and *pj3_part42* is for regularized matrix factorization. *matrixNorm.m* and *mergeOption.m* are helper functions for *wnmfrule.m* and *pj3_part42.m*. To run the program properly, **you should put all seven files mentioned above and the raw data in one folder**.
 
 #REFERENCES
 
