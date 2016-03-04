@@ -2,9 +2,13 @@
 
 In order to implement a recommendation system from the matrix R whose row represent the user-id and column represent the movie-id. We need to obtain the matrix for user-preference(U) and feature-movie(V) which have much lower dimension than R. We can factorize R = UV using alternating least square algorithm. That is, randomly pick U first and calculating the V such that minimize squared error, then with calculated V, update U to minimize squared error . Keep doing this until U and V converges. The algorithm can be easily implemented using multiple programming languages. Here we use Matlab to do this since Matlab is easier to use in terms of matrix calculation. In this project, we would analyze 100k data from MovieLens which contains 943 users and 1682 movies.
 
-#USAGE
+#REQUIREMENT
 
 The main program of the project is *main.m* and there are seven helper programs: *build_matrix.m* which build up the user-movie matrix from raw data, *createtest.m* shuffle the raw data and create test and train datasets for cross validation, the *wnmfrule.m* is for matrix factorization *pj3_part4* is for weight and R switched matrix factorization and *pj3_part42* is for regularized matrix factorization. *matrixNorm.m* and *mergeOption.m* are helper functions for *wnmfrule.m* and *pj3_part42.m*. To run the program properly, **you should put all eight files mentioned above and the raw data in one folder**.
+
+#USAGE
+
+Just run the main.m in matlab directly and you will get all the data and plots required by the project manual. 
 
 #REFERENCES
 
