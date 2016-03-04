@@ -8,7 +8,7 @@ The main program of the project is *main.m* and there are seven helper programs:
 
 #USAGE
 
-Just run the main.m in matlab directly and you will get all the data and plots required by the project manual. 
+Just run the main.m in matlab directly and you will get all plots required by the project manual. As for required data, the squared error required in part 1 is stored in *leastsquareerror1*, the minimum absolute error, maximum absolute error and the mean absolute error in part 2 are stored in *minerror2, maxerror2 and meanerror2* respectively, the squared error required in part4 is stored in *leastsquareerror4* and the average precision required by part 5 is stored in *averprecision5*.
 
 #REFERENCES
 
